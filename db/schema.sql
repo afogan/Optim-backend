@@ -23,7 +23,7 @@ CREATE TABLE users (
 CREATE TABLE workspaces (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    created_by INTEGER NOT NULL REFERENCES users(id),
+    owner_id INTEGER NOT NULL REFERENCES users(id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

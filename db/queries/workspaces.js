@@ -1,15 +1,15 @@
 import db from "#db/client";
 
-export async function createWorkspace(name, created_by) {
+export async function createWorkspace(name, owner_id) {
   const sql = `
-    INSERT INTO workspaces (name, created_by)
+    INSERT INTO workspaces (name, owner_id)
     VALUES ($1, $2)
     RETURNING *;
   `;
 
   const {
     rows: [workspace],
-  } = await db.query(sql, [name, created_by]);
+  } = await db.query(sql, [name, owner_id]);
 
   return workspace;
 }
