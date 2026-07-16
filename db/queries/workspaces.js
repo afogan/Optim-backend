@@ -29,14 +29,13 @@ export async function createWorkspace(name, ownerId) {
   return workspace;
 }
 
-export async function getWorkspacesForUser(userId) {
+export async function getWorkspaces() {
   const sql = `
-  SELECT w.*
-  FROM workspaces w
-  JOIN workspace_members wm ON wm.workspace_id = w.id
-  WHERE wm.user_id = $1
+    SELECT * FROM workspaces;
   `;
-  const { rows } = await db.query(sql, [userId]);
+
+  const { rows } = await db.query(sql);
+
   return rows;
 }
 
