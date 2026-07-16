@@ -7,5 +7,5 @@ if (process.env.NODE_ENV === "production") {
   options.ssl = { rejectUnauthorized: false };
 }
 
-const db = new pg.Client(options);
+const db = new pg.Pool(options);
 export default db;
