@@ -12,7 +12,7 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     google_id TEXT UNIQUE,
     email TEXT UNIQUE NOT NULL,
-    name TEXT NOT NULL,
+    username TEXT NOT NULL,
     password_hash TEXT,
     avatar_url TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -22,7 +22,7 @@ CREATE TABLE users (
 
 CREATE TABLE workspaces (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
+    username TEXT NOT NULL,
     owner_id INTEGER NOT NULL REFERENCES users(id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -44,7 +44,7 @@ CREATE TABLE projects (
     workspace_id INTEGER NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
     owner_id INTEGER NOT NULL REFERENCES users(id),
 
-    name TEXT NOT NULL,
+    username TEXT NOT NULL,
 
     status TEXT NOT NULL CHECK (
         status IN ('planning', 'active', 'completed', 'archived')
@@ -70,7 +70,7 @@ CREATE TABLE epics (
     id SERIAL PRIMARY KEY,
     project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
 
-    name TEXT NOT NULL,
+    username TEXT NOT NULL,
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
