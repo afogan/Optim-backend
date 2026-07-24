@@ -284,4 +284,23 @@ router.delete("/:id/members/:userId", async (req, res) => {
   res.status(204).send();
 });
 
+router.get("/:id/members", async (req, res) => {
+  const access = await getProjectAccess(req.params.id, req.user.id);
+  if (!access) return res.status(404).json({ error: "Project not found" });
+  if (!access.isMember)
+    return res
+      .status(403)
+      .json({ error: "You're not a member of this project" });
+
+  const { rows: members } = await db.query(
+    `SELECT u.id, u.name, u.email, u.avatar_url
+     FROM project_members pm
+     JOIN users u ON u.id = pm.user_id
+     WHERE pm.project_id = $1
+     ORDER BY u.name ASC`,
+    [access.project.id],
+  );
+  res.json({ members });
+});
+
 export default router;
