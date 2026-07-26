@@ -11,6 +11,14 @@ import morgan from "morgan";
 import taskCommentsRoutes from "#api/taskComments.routes";
 import commentRoutes from "#api/comments.routes";
 import columnsRouter from "#api/columns.routes";
+import taskLabelsRoutes from "#api/taskLabels.routes";
+import projectLabelsRoutes from "#api/projectLabels.routes";
+import labelRoutes from "#api/labels.routes";
+import projectTaskRoutes from "#api/projectTasks.routes";
+import taskRoutes from "#api/tasks.routes";
+import boardsRouter from "#api/boards.routes";
+import projectAnalyticsRoutes from "#api/projectAnalytics.routes";
+import projectsRouter from "#api/temporaryprojects.routes";
 
 app.use(cors({ origin: process.env.CORS_ORIGIN ?? /localhost/ }));
 
@@ -29,10 +37,21 @@ app.use("/workspaces", workspacesRouter);
 app.use("/tasks", taskCommentsRoutes);
 app.use("/comments", commentRoutes);
 
+app.use("/tasks", taskLabelsRoutes);
+app.use("/projects", projectLabelsRoutes);
+app.use("/labels", labelRoutes);
+
+app.use("/projects", projectTaskRoutes);
+app.use("/tasks", taskRoutes);
+
+app.use("/projects", projectAnalyticsRoutes);
+app.use(columnsRouter);
+
+app.use(boardsRouter);
+app.use("/projects", projectsRouter);
+
 app.use(handlePostgresErrors);
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send("Sorry! Something went wrong.");
 });
-
-app.use(columnsRouter);
