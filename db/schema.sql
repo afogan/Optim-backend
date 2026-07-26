@@ -17,20 +17,18 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     google_id TEXT UNIQUE,
-    username text unique,
+    username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    username TEXT NOT NULL,
     password_hash TEXT,
     avatar_url TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    is_done_column BOOLEAN NOT NULL DEFAULT FALSE
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 
 CREATE TABLE workspaces (
     id SERIAL PRIMARY KEY,
-    username TEXT NOT NULL,
+    name TEXT NOT NULL,
     owner_id INTEGER NOT NULL REFERENCES users(id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -52,7 +50,7 @@ CREATE TABLE projects (
     workspace_id INTEGER NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
     owner_id INTEGER NOT NULL REFERENCES users(id),
 
-    username TEXT NOT NULL,
+    name TEXT NOT NULL,
 
     status TEXT NOT NULL CHECK (
         status IN ('planning', 'active', 'completed', 'archived')
@@ -87,7 +85,8 @@ CREATE TABLE columns (
   board_id INTEGER NOT NULL REFERENCES boards(id) ON DELETE CASCADE,
 
   name TEXT NOT NULL,
-  position INTEGER NOT NULL
+  position INTEGER NOT NULL,
+  is_done_column BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 
@@ -95,7 +94,7 @@ CREATE TABLE epics (
     id SERIAL PRIMARY KEY,
     project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
 
-    username TEXT NOT NULL,
+    name TEXT NOT NULL,
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
