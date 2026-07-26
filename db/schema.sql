@@ -17,16 +17,14 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     google_id TEXT UNIQUE,
-    username text unique,
+    username TEXT UNIQUE,
     email TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
     password_hash TEXT,
     avatar_url TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    is_done_column BOOLEAN NOT NULL DEFAULT FALSE
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-
 
 CREATE TABLE workspaces (
     id SERIAL PRIMARY KEY,
@@ -87,7 +85,8 @@ CREATE TABLE columns (
   board_id INTEGER NOT NULL REFERENCES boards(id) ON DELETE CASCADE,
 
   name TEXT NOT NULL,
-  position INTEGER NOT NULL
+  position INTEGER NOT NULL,
+  is_done_column BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 
